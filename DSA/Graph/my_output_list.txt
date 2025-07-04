@@ -1,0 +1,32 @@
+
+===== Positive Node Test Cases =====
+
+Test 1: Chain connectivity
+Path 1->4 exists? 1 (Expected: 1)
+Path length 1->4: 3 (Expected: 3)
+Shortest path: 1 2 3 4 
+
+Test 2: Star topology
+Path 11->13 exists? 1 (Expected: 1)
+Path length 11->13: 2 (Expected: 2)
+Shortest path: 11 10 13 
+
+Test 3: Disconnected components
+Path 1->20 exists? 0 (Expected: 0)
+Path 20->21 exists? 1 (Expected: 1)
+
+Test 4: Node removal
+Path 11->13 exists after removal? 0 (Expected: 0)
+Edge 10->11 exists? 0 (Expected: 0)
+
+Test 5: Reconnect components
+Path 1->21 exists after reconnect? 1 (Expected: 1)
+Path length 1->21: 5 (Expected: 5)
+
+Test 6: Large node numbers
+Edge 1000->1001 exists? 0 (Expected: 1)
+Path length 1000->1001: -1 (Expected: 1)
+
+Test 7: Self-connection
+Path 5->5 exists? 0 (Expected: 1)
+Path length 5->5: 0 (Expected: 0)
