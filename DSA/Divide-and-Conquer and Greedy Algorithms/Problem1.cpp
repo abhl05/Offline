@@ -33,7 +33,7 @@ signed main() {
         cout << -1 << endl;
         return 0;
     }
-    int l = max, r = sum;
+    int l = max-1, r = sum;
     while(r-l > 1) {
         int m = l + (r-l)/2;
         if(good(m)) r = m;
