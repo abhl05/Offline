@@ -7,7 +7,7 @@ using namespace std;
 string a, b, globalAlignment_a, globalAlignment_b, localAlignment_a, localAlignment_b;
 int match_score, mismatch_penalty, gap_penalty, n, m;
 
-int globalAllignment(vector<vector<int>> &dp) {
+int globalAlignment(vector<vector<int>> &dp) {
     for(int i = 0; i <= n; i++) {
         for(int j = 0; j <= m; j++) {
             if(i == 0 && j == 0) {
@@ -56,7 +56,7 @@ int globalAllignment(vector<vector<int>> &dp) {
     return dp[n][m];
 }
 
-int localAllignment(vector<vector<int>> &dp) {
+int localAlignment(vector<vector<int>> &dp) {
     for(int i = 0; i <= n; i++) {
         for(int j = 0; j <= m; j++) {
             if(i == 0 || j == 0) {
@@ -115,10 +115,11 @@ int main() {
     n = a.length();
     m = b.length();
 
-    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+    vector<vector<int>> dp1(n + 1, vector<int>(m + 1, 0));
+    vector<vector<int>> dp2(n + 1, vector<int>(m + 1, 0));
     
-    int globalScore = globalAllignment(dp);
-    int localScore = localAllignment(dp);
+    int globalScore = globalAlignment(dp1);
+    int localScore = localAlignment(dp2);
     reverse(globalAlignment_a.begin(), globalAlignment_a.end());
     reverse(globalAlignment_b.begin(), globalAlignment_b.end());
     reverse(localAlignment_a.begin(), localAlignment_a.end());
