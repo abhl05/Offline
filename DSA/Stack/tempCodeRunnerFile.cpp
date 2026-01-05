@@ -1,1 +1,0 @@
-g++ -std=c++11 test.cpp arraystack.cpp liststack.cpp -o stack_test

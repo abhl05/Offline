@@ -1,8 +1,0 @@
-I 10
-I 5
-F 5
-M Min
-T In
-D 5
-E
-S

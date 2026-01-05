@@ -1,0 +1,1 @@
+{"name":"Local: problem1","url":"d:\\Code\\Offline\\DSA2\\problem1.cpp","tests":[{"id":1765434955005,"input":"3 4 \n1 2 3 \n2 3 1 \n1 3 7\n2 1 5","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\Offline\\DSA2\\problem1.cpp","group":"local","local":true}
