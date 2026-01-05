@@ -42,7 +42,7 @@ class Heap {
         int parentidx = (curidx-1)/2;
         if(parentidx >= 0 && heap_array[parentidx] < heap_array[curidx]) {
             int temp = heap_array[parentidx];
-            heap_array[parentidx] = heap_array[curidx];
+            heap_array[parentidx] = heap_array[curidx]; 
             heap_array[curidx] = temp;
             heapifyUp(parentidx);
         }
