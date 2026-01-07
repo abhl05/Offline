@@ -23,7 +23,7 @@ void solve() {
         currencyIndex[currency] = i + 1;
     }
     cin >> m;
-    vector <tuple<int  >> adjw(n + 1);
+    vector <tuple<int, int, double>> edges(n + 1);
 
     forn(i, m) {
         string u, v;
@@ -31,7 +31,7 @@ void solve() {
         cin >> u >> rate >> v;
         int u_node = currencyIndex[u];
         int v_node = currencyIndex[v];
-        adjw.push_back({u_node, v_node, -log(rate)});
+        edges.push_back({u_node, v_node, -log(rate)});
         
     }
 
@@ -44,18 +44,8 @@ void solve() {
             }
         }
     }
-    for(int k = 1; k <= n; k++) {
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j <= n; j++) {
-                if(dist[i][k] != INF && dist[k][j] != INF) {
-                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-                }
-            }
-        }
-    }
-
-    for(int i = 1; i <= n; i++) {
-        if(dist[i][i] < 0) {
+    for (auto [u, v, w] : edges) {
+        if (dist[v] > dist[u] + w) {
             cout << "Yes" << endl;
             return;
         }
