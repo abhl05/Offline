@@ -10,56 +10,50 @@ typedef long long ll;
 #define vout(x) for (auto &i : x) cout << i << " ";
 #define all(x) x.begin(), x.end()
 #define forn(i, n) for(int i = 0; i < (n); i++)
-const int maxn = 1e6 + 5;
 const int MOD = 1e9 + 7;
 const ll INF = 1e18;
-vector <pair<int, int>> adjw[maxn];
-int dist[maxn][2];
-int n, m;
 
-void dijkstra(int src) {
-    priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
-    for (int i = 1; i <= n; i++) {
-        dist[i][0] = INF;
-        dist[i][1] = INF;
+void solve() {
+    int n, m, q;
+    cin >> n >> m >> q;
+    vector <vector<pair<int, int>>> adjw(n + 1);
+
+    forn(i, m) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        adjw[u].push_back({v, w});
+        adjw[v].push_back({u, w});
     }
 
-    dist[src][0] = 0;
-    pq.push({0, {src, 0}});
-    while (!pq.empty()) {
-        int u = pq.top().second.first;
-        int d = pq.top().first;
-        int state = pq.top().second.second;
-        pq.pop();
-        if (d != dist[u][state]) continue;
-
-        for (auto edge : adjw[u]) {
+    // floyd warshall
+    vector <vector<int>> dist(n + 1, vector<int>(n + 1, INF));
+    
+    for(int u = 1; u <= n; u++) {
+        for(auto edge : adjw[u]) {
             int v = edge.first;
             int w = edge.second;
-            if (d + w < dist[v][state]) {
-                dist[v][state] = d + w;
-                pq.push({dist[v][state], {v, state}});
-            }
-            if(state == 0) {
-                if (d + w / 2 < dist[v][1]) {
-                    dist[v][1] = d + w / 2;
-                    pq.push({dist[v][1], {v, 1}});
+            dist[u][v] = u != v ? w : 0;
+        }
+    }
+    for(int k = 1; k <= n; k++) {
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+                if(dist[i][k] != INF && dist[k][j] != INF) {
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
         }
     }
-}
 
-
-void solve() {
-    cin >> n >> m;
-    forn(i, m) {
-        int u, v, cost;
-        cin >> u >> v >> cost;
-        adjw[u].push_back({v, cost});
+    while(q--) {
+        int u, v;
+        cin >> u >> v;
+        if(dist[u][v] == INF) {
+            cout << -1 << endl;
+        } else {
+            cout << dist[u][v] << endl;
+        }
     }
-    dijkstra(1);
-    cout << dist[n][1] << endl;
 }
 
 signed main() {
