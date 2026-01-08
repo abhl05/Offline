@@ -16,25 +16,19 @@ const ll INF = 1e18;
 void solve() {
     int n, m, q;
     cin >> n >> m >> q;
-    vector <vector<pair<int, int>>> adjw(n + 1);
+
+    vector <vector<int>> dist(n + 1, vector<int>(n + 1, INF));
+    for(int i = 1; i <= n; i++) {
+        dist[i][i] = 0;
+    }
 
     forn(i, m) {
         int u, v, w;
         cin >> u >> v >> w;
-        adjw[u].push_back({v, w});
-        adjw[v].push_back({u, w});
+        dist[u][v] = min(dist[u][v], w);
+        dist[v][u] = min(dist[v][u], w);
     }
 
-    // floyd warshall
-    vector <vector<int>> dist(n + 1, vector<int>(n + 1, INF));
-    
-    for(int u = 1; u <= n; u++) {
-        for(auto edge : adjw[u]) {
-            int v = edge.first;
-            int w = edge.second;
-            dist[u][v] = u != v ? w : 0;
-        }
-    }
     for(int k = 1; k <= n; k++) {
         for(int i = 1; i <= n; i++) {
             for(int j = 1; j <= n; j++) {
