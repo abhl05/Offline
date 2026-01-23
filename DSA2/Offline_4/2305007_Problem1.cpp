@@ -24,16 +24,20 @@ bool bfs(vector<vector<int>> &adj, int s, int t, vector<int> &parent, int n) {
     visited[s] = true;
     parent[s] = -1;
 
+    // Standard BFS Loop
     while (!q.empty()) {
         int u = q.front();
         q.pop();
 
         for (int v = 0; v < n; v++) {
+            // If v is not visited and there is available capacity (rGraph[u][v] > 0)
             if (!visited[v] && adj[u][v] > 0) {
+                // If we found the sink, we are done
                 if (v == t) {
                     parent[v] = u;
                     return true;
                 }
+                // Otherwise, mark visited and push to queue
                 q.push(v);
                 parent[v] = u;
                 visited[v] = true;
@@ -41,11 +45,18 @@ bool bfs(vector<vector<int>> &adj, int s, int t, vector<int> &parent, int n) {
         }
     }
 
+    // We didn't reach the sink
     return false;
 }
 
+// Returns the maximum flow from s to t in the given graph
 void edmondsKarp(vector<vector<int>> &adj, vector<tuple<int, int, int>> &edges, int s, int t, int n) {
     int u, v;
+
+    // Create a residual graph and fill the residual graph with
+    // given capacities in the original graph as residual capacities
+    // in the residual graph.
+    // rGraph[i][j] indicates residual capacity of edge i-j
     vector<vector<int>> rGraph(n, vector<int>(n));
     for (u = 0; u < n; u++) {
         for (v = 0; v < n; v++) {
@@ -53,29 +64,34 @@ void edmondsKarp(vector<vector<int>> &adj, vector<tuple<int, int, int>> &edges, 
         }
     }
 
-    vector<vector<int>> flow(n, vector<int>(n, 0)); 
+    vector<vector<int>> flow(n, vector<int>(n, 0)); // To store the flow values
 
-    vector<int> parent(n);  
-    int max_flow = 0;  
+    vector<int> parent(n);  // This array is filled by BFS and to store path
+    int max_flow = 0;  // There is no flow initially
 
+    // Augment the flow while there is a path from source to sink
     while (bfs(rGraph, s, t, parent, n)) {
+        // Find minimum residual capacity of the edges along the
+        // path filled by BFS.
         int path_flow = INF;
         for (v = t; v != s; v = parent[v]) {
             u = parent[v];
             path_flow = min(path_flow, rGraph[u][v]);
         }
         
+        // update residual capacities of the edges and reverse edges
         for (v = t; v != s; v = parent[v]) {
             u = parent[v];
             if(adj[u][v] > 0) {
-                flow[u][v] += path_flow; 
+                flow[u][v] += path_flow; // Forward edge
             } else {
-                flow[v][u] -= path_flow; 
+                flow[v][u] -= path_flow; // Backward edge
             }
-            rGraph[u][v] -= path_flow; 
-            rGraph[v][u] += path_flow; 
+            rGraph[u][v] -= path_flow; // Reduce capacity in forward direction
+            rGraph[v][u] += path_flow; // Add capacity in reverse direction (residual)
         }
         
+        // Add path flow to overall flow
         max_flow += path_flow;
     }
 
@@ -88,6 +104,7 @@ void edmondsKarp(vector<vector<int>> &adj, vector<tuple<int, int, int>> &edges, 
 void solve() {
     int n, m;
     cin >> n >> m;
+    // Create capacity graph
     vector<vector<int>> capacity(n + 1, vector<int>(n + 1, 0));
     vector<tuple<int, int, int>> edges;
 
@@ -97,8 +114,9 @@ void solve() {
         edges.push_back({u, v, w});
         capacity[u][v] += w; 
     }
-    int s; 
-    int t; 
+    // cout << edges.size() << endl;
+    int s; // source
+    int t; // sink
     cin >> s >> t;
     edmondsKarp(capacity, edges, s, t, n + 1);
 }
